@@ -19,7 +19,7 @@ class ChangesetTest < Minitest::Test
       .validate_length(:name, in: 5..30)
       .validate_inclusion(:name, ["ali", "mmd"])
       .validate_inclusion(:age, 18..100)
-      .validate_confirmation(:password)
+      .validate_confirmation(:password, message: "Should Match Confirmation")
       .validate_format(:email, /@/)
       .validate_acceptance(:agree)
       .validate_number(:age, not_equal_to: 45)
@@ -38,6 +38,6 @@ class ChangesetTest < Minitest::Test
   end
 
   def test_errors
-    assert_equal @changeset.errors, {pets: {}, agree: {acceptance: "Error For acceptance"}, :name=>{:length=>"Error For length", :inclusion=>"Error For inclusion"}, :age=>{:inclusion=>"Error For inclusion"}, :password=>{:confirmation=>"Error For confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Error For format"}}
+    assert_equal @changeset.errors, {pets: {}, agree: {acceptance: "Is not true"}, :name=>{:length=>"Length does not match", :inclusion=>"Is not included in enumerable"}, :age=>{:inclusion=>"Is not included in enumerable"}, :password=>{:confirmation=>"Should Match Confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Does not match the regex"}}
   end
 end

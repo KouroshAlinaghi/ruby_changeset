@@ -1,4 +1,5 @@
 require_relative 'validators'
+require_relative 'messages'
 
 class Changeset 
 
@@ -19,11 +20,11 @@ class Changeset
   
   private
 
-  def generate_error_for(key, validation)
+  def generate_error_for(key, validation, message)
     if @errors[key].nil?
       @errors[key] = {}
     end
-    @errors[key][validation] = "Error For #{validation}"
+    @errors[key][validation] = message || Messages.const_get("#{validation}_MESSAGE".upcase.to_sym)
   end
 
   def symbolized_keys(hash) 

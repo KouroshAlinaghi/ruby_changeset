@@ -51,5 +51,5 @@ changeset.errors # => {:name=>{:length=>"Error For length", :inclusion=>"Error F
 ## TODO
 
 - [x] Add more validator methods
-- [ ] Make error messages more human-friendly
-- [ ] Allow custom error messages
+- [x] Make error messages more human-friendly
+- [x] Allow custom error messages

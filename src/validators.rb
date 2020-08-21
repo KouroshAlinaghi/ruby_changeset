@@ -12,10 +12,10 @@ module Validators
    self
   end
 
-  def validate_required(*required_keys) 
+  def validate_required(*required_keys, opts) 
     required_keys.each do |key|
       unless @changes.keys.include?(key)
-        generate_error_for(key, :required)
+        generate_error_for(key, :required, message)
       end
     end
     self
@@ -35,35 +35,37 @@ module Validators
     else
       raise "Should define at least one option for validate_length()"
     end
-    generate_error_for(key, :length) unless cond
-    self
-  end
-
-  def validate_inclusion(key, inclusion) 
-    unless inclusion.include?(@changes[key])
-      generate_error_for(key, :inclusion)
+    unless cond
+      generate_error_for(key, :length, opts[:message]) 
     end
     self
   end
 
-  def validate_confirmation(key) 
+  def validate_inclusion(key, inclusion, message: nil) 
+    unless inclusion.include?(@changes[key])
+      generate_error_for(key, :inclusion, message)
+    end
+    self
+  end
+
+  def validate_confirmation(key, message: nil) 
     confirmation_key = "#{key}_confirmation".to_sym
     unless @changes[key] == @changes[confirmation_key]
-      generate_error_for(key, :confirmation)
+      generate_error_for(key, :confirmation, message)
     end
     self
   end
 
-  def validate_format(key, regex) 
+  def validate_format(key, regex, message: nil) 
     unless @changes[key].match?(regex)
-      generate_error_for(key, :format)
+      generate_error_for(key, :format, message)
     end
     self
   end
 
-  def validate_acceptance(key)
+  def validate_acceptance(key, message: nil)
     unless @changes[key] == true
-      generate_error_for(key, :acceptance)
+      generate_error_for(key, :acceptance, message)
     end
     self
   end
@@ -82,27 +84,29 @@ module Validators
     elsif opts.has_key?(:not_equal_to)
       cond = @changes[key] != opts[:not_equal_to]
     end
-    generate_error_for(key, :number) unless cond
+    unless cond
+      generate_error_for(key, :number, opts[:message]) 
+    end
     self
   end
   
-  def validate_exclusion(key, exclusion)
+  def validate_exclusion(key, exclusion, message: nil)
     if exclusion.include?(@changes[key])
-      generate_error_for(key, :exclusion)
+      generate_error_for(key, :exclusion, message)
     end
     self
   end
 
-  def validate_subset(key, arr)
+  def validate_subset(key, arr, message: nil)
     unless @changes[key].all?{|k| arr.include?(k)}
-      generate_error_for(key, :subset)
+      generate_error_for(key, :subset, message)
     end
     self
   end
 
-  def validate_change(key, &validator)
+  def validate_change(key, message: nil, &validator)
     unless validator.call(@changes[key])
-      generate_error_for(key, :custom_validator)
+      generate_error_for(key, :custom_validator, message)
     end
     self
   end
