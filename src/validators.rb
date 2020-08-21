@@ -14,7 +14,7 @@ module Validators
 
   def validate_required(*required_keys, opts) 
     required_keys.each do |key|
-      unless @changes.keys.include?(key)
+      unless @changes.keys.include?(key) || @changes[key].empty? || @changes[key].nil?
         generate_error_for(key, :required, message)
       end
     end
