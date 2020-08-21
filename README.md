@@ -16,6 +16,10 @@ There is also a `#valid?` instance method that returns boolean based on `@errors
 * `validate_confirmation()`
 * `validate_format()`
 * `validate_acceptance()`
+* `validate_number()`
+* `validate_subset()`
+* `validate_change()`
+* `validate_exclusion()`
 
 You can visit [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) for more information about validators.
 
@@ -46,6 +50,6 @@ changeset.errors # => {:name=>{:length=>"Error For length", :inclusion=>"Error F
 
 ## TODO
 
-- [ ] Add more validator methods
+- [x] Add more validator methods
 - [ ] Make error messages more human-friendly
 - [ ] Allow custom error messages
