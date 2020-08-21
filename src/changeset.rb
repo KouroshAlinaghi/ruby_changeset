@@ -36,28 +36,3 @@ class Changeset
 
 end
 
-params = {
-  "name" => "krsh", 
-  age: 16, 
-  "bruh" => "brrrrrr", 
-  password: "krsh/3183", 
-  password_confirmation: "somethingelse",
-  email: "kouroshalinaghi.gmail.com",
-  agree: false
-}
-
-changeset = Changeset.new(params)
-  .cast(:name, :age, :password, :password_confirmation, :email, :agree)
-  .validate_required(:name)
-  .validate_length(:name, 5..30)
-  .validate_inclusion(:name, ["ali", "mmd"])
-  .validate_inclusion(:age, 18..100)
-  .validate_confirmation(:password)
-  .validate_format(:email, /@/)
-  .validate_acceptance(:agree)
-
-puts """
-#{changeset.valid?}
-#{changeset.changes}
-#{changeset.errors}
-"""
