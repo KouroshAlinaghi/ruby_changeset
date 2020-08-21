@@ -37,7 +37,7 @@ params = {
 changeset = Changeset.new(params)
   .cast(:name, :age, :password, :password_confirmation, :email)
   .validate_required(:name)
-  .validate_length(:name, 5..30)
+  .validate_length(:name, in: 5..30)
   .validate_inclusion(:name, ["Kourosh", "Ali"])
   .validate_number(:age, greater_than_or_equal_to: 18)
   .validate_confirmation(:password)
