@@ -28,24 +28,32 @@ You can visit [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) for 
 params = {
   "name" => "krsh", 
   age: 16, 
-  "uncasted_field" => "brrrrrr", 
+  "bruh" => "brrrrrr", 
   password: "121212", 
   password_confirmation: "something else",
-  email: "kouroshalinaghi.gmail.com"
+  email: "kouroshalinaghi.gmail.com",
+  agree: false,
+  pets: ["dog", "cat"]
 }
 
-changeset = Changeset.new(params)
-  .cast(:name, :age, :password, :password_confirmation, :email)
+changeset = Changeset.new(@params)
+  .cast(:name, :age, :password, :password_confirmation, :email, :agree, :pets)
   .validate_required(:name)
   .validate_length(:name, in: 5..30)
-  .validate_inclusion(:name, ["Kourosh", "Ali"])
-  .validate_number(:age, greater_than_or_equal_to: 18)
-  .validate_confirmation(:password)
+  .validate_inclusion(:name, ["ali", "mmd"])
+  .validate_inclusion(:age, 18..100)
+  .validate_confirmation(:password, message: "Should Match Confirmation")
   .validate_format(:email, /@/)
+  .validate_acceptance(:agree)
+  .validate_number(:age, not_equal_to: 45)
+  .validate_exclusion(:password, ["111111", "123456"])
+  .validate_length(:password, min: 6)
+  .validate_subset(:pets, ["dog", "cat", "duck"])
+  .validate_change(:pets){|c| true }
 
 changeset.valid? # => false
-changeset.changes # => {:name=>"krsh", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
-changeset.errors # => {:name=>{:length=>"Error For length", :inclusion=>"Error For inclusion"}, :age=>{:inclusion=>"Error For inclusion"}, :password=>{:confirmation=>"Error For confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Error For format"}}
+changeset.changes # => {pets: ["dog", "cat"], agree: false, :name=>"krsh", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
+changeset.errors # => {pets: {}, agree: {acceptance: "Is not true"}, :name=>{:length=>"Length does not match", :inclusion=>"Is not included in enumerable"}, :age=>{:inclusion=>"Is not included in enumerable"}, :password=>{:confirmation=>"Should Match Confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Does not match the regex"}}
 ```
 
 ## TODO
