@@ -10,11 +10,11 @@ A [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) like validator f
 There is also a `#valid?` instance method that returns boolean based on `@errors`
 
 ## List of available validators
-⋅⋅* `validate_required()`
-⋅⋅* `validate_length()`
-⋅⋅* `validate_inclusion()`
-⋅⋅* `validate_confirmation()`
-⋅⋅* `validate_format()`
+* `validate_required()`
+* `validate_length()`
+* `validate_inclusion()`
+* `validate_confirmation()`
+* `validate_format()`
 
 You can visit [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) for more information about validators.
 
