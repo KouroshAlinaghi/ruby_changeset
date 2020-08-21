@@ -42,3 +42,9 @@ changeset.valid? # => false
 changeset.changes # => {:name=>"krsh", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
 changeset.errors # => {:name=>{:length=>"Error For length", :inclusion=>"Error For inclusion"}, :age=>{:inclusion=>"Error For inclusion"}, :password=>{:confirmation=>"Error For confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Error For format"}}
 ```
+
+## TODO
+
+- [ ] Add more validator methods
+- [ ] Make error messages more human-friendly
+- [ ] Allow custom error messages
