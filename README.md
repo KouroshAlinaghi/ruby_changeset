@@ -15,6 +15,7 @@ There is also a `#valid?` instance method that returns boolean based on `@errors
 * `validate_inclusion()`
 * `validate_confirmation()`
 * `validate_format()`
+* `validate_acceptance()`
 
 You can visit [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) for more information about validators.
 

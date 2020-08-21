@@ -50,4 +50,10 @@ module Validators
     self
   end
 
+  def validate_acceptance(key)
+    unless @changes[key] == true
+      generate_error_for(key, :acceptance)
+    end
+    self
+  end
 end
