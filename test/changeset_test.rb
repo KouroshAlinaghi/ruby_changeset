@@ -1,4 +1,4 @@
-require_relative "../src/changeset"
+require_relative "../lib/changeset"
 require "minitest/autorun"
 
 class ChangesetTest < Minitest::Test

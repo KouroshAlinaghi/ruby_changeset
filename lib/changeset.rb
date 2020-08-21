@@ -1,5 +1,5 @@
-require_relative 'validators'
-require_relative 'messages'
+require_relative 'changeset/validators'
+require_relative 'changeset/messages'
 
 class Changeset 
 
