@@ -1,5 +1,5 @@
 # Ruby Changeset
-A [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) like validator for ruby
+An [Ecto Changeset](https://hexdocs.pm/ecto/Ecto.Changeset.html) like validator for ruby
 
 ## Fields
 | Key | Type | Example |
