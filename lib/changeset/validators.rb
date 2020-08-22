@@ -12,9 +12,13 @@ module Validators
    self
   end
 
-  def validate_required(*required_keys, opts) 
+  def validate_required(*required_keys, message: nil) 
     required_keys.each do |key|
-      unless @changes.keys.include?(key) || @changes[key].empty? || @changes[key].nil?
+      if @changes.has_key?(key)
+        if @changes[key].empty? || @changes[key].nil?
+          generate_error_for(key, :required, message)
+        end
+      else
         generate_error_for(key, :required, message)
       end
     end

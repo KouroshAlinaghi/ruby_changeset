@@ -4,7 +4,7 @@ require "minitest/autorun"
 class ChangesetTest < Minitest::Test
   def setup
     @params = {
-      "name" => "krsh", 
+      "name" => "", 
       age: 16, 
       "bruh" => "brrrrrr", 
       password: "121212", 
@@ -34,10 +34,10 @@ class ChangesetTest < Minitest::Test
   end
 
   def test_changes
-    assert_equal @changeset.changes, {pets: ["dog", "cat"], agree: false, :name=>"krsh", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
+    assert_equal @changeset.changes, {pets: ["dog", "cat"], agree: false, :name=>"", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
   end
 
   def test_errors
-    assert_equal @changeset.errors, {pets: {}, agree: {acceptance: "Is not true"}, :name=>{:length=>"Length does not match", :inclusion=>"Is not included in enumerable"}, :age=>{:inclusion=>"Is not included in enumerable"}, :password=>{:confirmation=>"Should Match Confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Does not match the regex"}}
+    assert_equal @changeset.errors, {pets: {}, agree: {acceptance: "Is not true"}, :name=>{:length=>"Length does not match", :inclusion=>"Is not included in enumerable", :required => "Can't be blank"}, :age=>{:inclusion=>"Is not included in enumerable"}, :password=>{:confirmation=>"Should Match Confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Does not match the regex"}}
   end
 end
