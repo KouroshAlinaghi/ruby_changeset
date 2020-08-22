@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'changeset'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
   s.date        = '2020-08-21'
   s.summary     = "Validator"
   s.description = "A Ecto Changeset Like Validator For Ruby"
