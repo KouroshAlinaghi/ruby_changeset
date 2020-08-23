@@ -9,6 +9,6 @@ module Messages
   NUMBER_MESSAGE = "Number doesn't match"
   EXCLUSION_MESSAGE = "Is included in enumerable"
   SUBSET_MESSAGE = "Is not a subset of enumerable"
-  CUSTOM_VALIDATOR = "Custom validator returned false"
+  CUSTOM_VALIDATOR_MESSAGE = "Custom validator returned false"
 
 end
