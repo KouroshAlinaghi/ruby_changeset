@@ -13,31 +13,82 @@ class ChangesetTest < Minitest::Test
       agree: false,
       pets: ["dog", "cat"]
     }
-    @changeset = Changeset.new(@params)
-      .cast(:name, :age, :password, :password_confirmation, :email, :agree, :pets)
-      .validate_required(:name)
-      .validate_length(:name, in: 5..30)
-      .validate_inclusion(:name, ["ali", "mmd"])
-      .validate_inclusion(:age, 18..100)
-      .validate_confirmation(:password, message: "Should Match Confirmation")
-      .validate_format(:email, /@/)
-      .validate_acceptance(:agree)
-      .validate_number(:age, not_equal_to: 45)
-      .validate_exclusion(:password, ["111111", "123456"])
-      .validate_length(:password, min: 6)
-      .validate_subset(:pets, ["dog", "cat", "duck"])
-      .validate_change(:pets){|c| true }
   end
 
-  def test_valid
+  def test_cast
+    @changeset = Changeset.new(@params).cast(:name, :age)
+    assert_equal @changeset.valid?, true
+    assert_equal @changeset.changes, {name: "", age: 16}
+    assert_equal @changeset.errors, {name: {}, age: {}}
+  end
+
+  def test_validate_required
+    @changeset = Changeset.new(@params).cast(:name, :email, :age).validate_required(:name, :email)
     assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {name: "", age: 16, email: "kouroshalinaghi.gmail.com"}
+    assert_equal @changeset.errors, {name: {required: "Can't be blank"}, email: {}, age: {}}
   end
 
-  def test_changes
-    assert_equal @changeset.changes, {pets: ["dog", "cat"], agree: false, :name=>"", :age=>16, :password=>"121212", :password_confirmation=>"something else", :email=>"kouroshalinaghi.gmail.com"}
+  def test_validate_length
+    @changeset = Changeset.new(@params).cast(:password, :email, :age).validate_length(:password, min: 8, message: "length_error")
+    assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {age: 16, password: "121212", email: "kouroshalinaghi.gmail.com"}
+    assert_equal @changeset.errors, {password: {length: "length_error"}, email: {}, age: {}}
   end
 
-  def test_errors
-    assert_equal @changeset.errors, {pets: {}, agree: {acceptance: "Is not true"}, :name=>{:length=>"Length does not match", :inclusion=>"Is not included in enumerable", :required => "Can't be blank"}, :age=>{:inclusion=>"Is not included in enumerable"}, :password=>{:confirmation=>"Should Match Confirmation"}, :password_confirmation=>{}, :email=>{:format=>"Does not match the regex"}}
+  def test_validate_inclusion
+    @changeset = Changeset.new(@params).cast(:email, :agree).validate_inclusion(:agree, [true, false])
+    assert_equal @changeset.valid?, true
+    assert_equal @changeset.changes, {agree: false, email: "kouroshalinaghi.gmail.com"}
+    assert_equal @changeset.errors, {email: {}, agree: {}}
+  end
+
+  def test_validate_confirmation
+    @changeset = Changeset.new(@params).cast(:password, :password_confirmation).validate_confirmation(:password, message: "Should Match Confirmation")
+    assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {password: "121212", password_confirmation: "something else"}
+    assert_equal @changeset.errors, {password: {confirmation: "Should Match Confirmation"}, password_confirmation: {}}
+  end
+
+  def test_validate_format
+    @changeset = Changeset.new(@params).cast(:email).validate_format(:email, /@/, message: "format message")
+    assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {email: "kouroshalinaghi.gmail.com"}
+    assert_equal @changeset.errors, {email: {format: "format message"}}
+  end
+
+  def test_validate_acceptance
+    @changeset = Changeset.new(@params).cast(:agree).validate_acceptance(:agree, message: "please accept")
+    assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {agree: false}
+    assert_equal @changeset.errors, {agree: {acceptance: "please accept"}}
+  end
+
+  def test_validate_number
+    @changeset = Changeset.new(@params).cast(:age).validate_number(:age, equal_to: 16)
+    assert_equal @changeset.valid?, true
+    assert_equal @changeset.changes, {age: 16}
+    assert_equal @changeset.errors, {age: {}}
+  end
+
+  def test_validate_exclusion
+    @changeset = Changeset.new(@params).cast(:password).validate_exclusion(:password, ["111111", "123456"])
+    assert_equal @changeset.valid?, true
+    assert_equal @changeset.changes, {password: "121212"}
+    assert_equal @changeset.errors, {password: {}}
+  end
+
+  def test_validate_subset
+    @changeset = Changeset.new(@params).cast(:pets).validate_subset(:pets, ["dog", "cat", "duck"])
+    assert_equal @changeset.valid?, true
+    assert_equal @changeset.changes, {pets: ["dog", "cat"]}
+    assert_equal @changeset.errors, {pets: {}}
+  end
+
+  def test_validate_change
+    @changeset = Changeset.new(@params).cast(:age).validate_change(:age, message: "mohmal"){|name| false}
+    assert_equal @changeset.valid?, false
+    assert_equal @changeset.changes, {age: 16}
+    assert_equal @changeset.errors, {age: {custom_validator: "mohmal"}}
   end
 end
